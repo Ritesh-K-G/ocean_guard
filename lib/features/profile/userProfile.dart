@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ocean_guard/constants/color.dart';
+import 'package:ocean_guard/features/map/showMap.dart';
 import 'package:ocean_guard/utils/helpers/AppHelpers.dart';
 import 'package:ocean_guard/utils/styles/button.dart';
 import 'package:ocean_guard/utils/styles/text.dart';
@@ -115,10 +116,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           width: 2.0,
                         ),
                       ),
-                      child: Image.asset(
-                        'assets/images/world-map.gif',
-                        fit: BoxFit.cover,
-                      ),
+                      child: showMap()
                     ),
                   ],
                 ),
