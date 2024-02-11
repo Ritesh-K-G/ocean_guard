@@ -4,6 +4,26 @@ import 'package:ocean_guard/constants/sizes.dart';
 
 class AppTextStyles {
 
+  static const TextStyle authHeader = TextStyle(
+      color: AppColors.white,
+      fontSize: AppSizes.headingmd,
+      fontFamily: 'HindJalandhar',
+      fontWeight: FontWeight.w700);
+
+  static const TextStyle authTabButtons = TextStyle(
+    color: AppColors.white,
+    fontSize: AppSizes.sm, // replaced from .lg
+    fontFamily: 'Hind',
+    fontWeight: FontWeight.normal, // instead of w400
+  );
+
+  static const TextStyle authTabButtonsUnselected = TextStyle(
+    color: AppColors.myCommentGray,
+    fontSize: AppSizes.sm, // replaced from .lg
+    fontFamily: 'Hind',
+    fontWeight: FontWeight.normal, // instead of w400
+  );
+
   static const TextStyle formLabelStyle = TextStyle(
     color: AppColors.myCommentGray,
     fontFamily: 'Karla',

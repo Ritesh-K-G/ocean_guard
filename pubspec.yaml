@@ -16,8 +16,6 @@ dependencies:
   image_picker: ^1.0.5
   cupertino_icons: ^1.0.2
   flutter_map: ^6.1.0
-  location: ^5.0.3
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -34,3 +32,4 @@ flutter:
     - assets/images/world-map.gif
     - assets/images/dirty-ocean.jpg
     - assets/images/ishaan.jfif
+    - assets/icons/google.png

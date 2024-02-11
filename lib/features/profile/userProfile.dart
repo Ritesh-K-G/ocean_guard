@@ -116,7 +116,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           width: 2.0,
                         ),
                       ),
-                      child: showMap()
+                      child: Image.asset(
+                        'assets/images/world-map.gif',
+                        fit: BoxFit.cover
+                      )
                     ),
                   ],
                 ),

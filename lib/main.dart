@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ocean_guard/constants/color.dart';
+import 'package:ocean_guard/features/authentication/MainAuthScreen.dart';
 import 'package:ocean_guard/navbar.dart';
 import 'package:ocean_guard/utils/widgets/ImagePicker/MultiImageProvider.dart';
 import 'package:provider/provider.dart';
@@ -43,6 +44,6 @@ class AuthCheck extends StatefulWidget {
 class _AuthCheckState extends State<AuthCheck> {
   @override
   Widget build(BuildContext context) {
-    return Navbar();
+    return AuthScreen();
   }
 }

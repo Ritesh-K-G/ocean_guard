@@ -20,8 +20,8 @@ class AppColors {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [
-      Color.fromARGB(255, 58, 100, 228), // Start color
-      Color(0xFF6246EA), // End color
+      Color(0xFF0066CC), // Start color
+      Color(0xFF0059B3), // End color
     ],
   );
   static const Gradient whiteGradient = LinearGradient(
