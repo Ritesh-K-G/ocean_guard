@@ -78,14 +78,18 @@ class _QueriesDashBoardState extends State<QueriesDashBoard> {
               padding: const EdgeInsets.all(20),
               itemCount: sampleQueries.length,
               itemBuilder: (context, index) {
-                return QueryCard(query: sampleQueries[index]);
+                return Column(
+                  children: [
+                    QueryCard(query: sampleQueries[index]),
+                    const Divider(
+                      indent: 20,
+                      endIndent: 20,
+                    ),
+                  ],
+                );
               },
             ),
-          ),
-          const Divider(
-            indent: 20,
-            endIndent: 20,
-          ),
+          )
         ],
       ),
     );

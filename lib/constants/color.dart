@@ -24,12 +24,12 @@ class AppColors {
       Color(0xFF0059B3), // End color
     ],
   );
-  static const Gradient whiteGradient = LinearGradient(
+  static const Gradient cardGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [
-      Color(0xFFE3E3E7), // Start color
-      Color(0xFFE3E3E7), // End color
+      Color(0xFFFF676D),
+      Color(0xFFFFC171),
     ],
   );
 }

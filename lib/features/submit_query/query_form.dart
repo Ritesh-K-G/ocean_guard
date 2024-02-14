@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ocean_guard/constants/color.dart';
+import 'package:ocean_guard/features/map/showMap.dart';
 import 'package:ocean_guard/utils/helpers/AppHelpers.dart';
 import 'package:ocean_guard/utils/helpers/wrappers.dart';
 import 'package:ocean_guard/utils/styles/button.dart';
@@ -77,17 +78,14 @@ class _QueryFormState extends State<QueryForm> {
                   const MultiImageUploader(),
                   Container(
                     width: AppHelpers.screenWidth(context) * 0.9,
-                    height: 350,
+                    height: AppHelpers.screenHeight(context) * 0.7,
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: Colors.black,
                         width: 2.0,
                       ),
                     ),
-                    child: Image.asset(
-                      'assets/images/world-map.gif',
-                      fit: BoxFit.cover,
-                    ),
+                    child: showMap()
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
