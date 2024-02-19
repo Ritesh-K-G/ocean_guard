@@ -4,8 +4,10 @@ import 'package:ocean_guard/features/authentication/MainAuthScreen.dart';
 import 'package:ocean_guard/navbar.dart';
 import 'package:ocean_guard/utils/widgets/ImagePicker/MultiImageProvider.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+Future<void> main() async {
   runApp(const MyApp());
 }
 
