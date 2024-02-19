@@ -17,6 +17,12 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_map: ^6.1.0
   firebase_core: ^2.25.4
+  decorated_text: ^0.1.0
+  location: ^5.0.3
+  geocoding: ^2.1.1
+  dio: ^5.4.0
+  cached_network_image: ^3.3.1
+  photo_view: ^0.14.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -32,5 +38,29 @@ flutter:
   assets:
     - assets/images/world-map.gif
     - assets/images/dirty-ocean.jpg
+    - assets/images/card_gradient.jpg
     - assets/images/ishaan.jfif
     - assets/icons/google.png
+    - assets/images/beach.jpeg
+
+  fonts:
+    - family: Hind
+      fonts:
+        - asset: assets/fonts/Hind/Hind-Bold.ttf
+        - asset: assets/fonts/Hind/Hind-Medium.ttf
+        - asset: assets/fonts/Hind/Hind-Regular.ttf
+    - family: HindJalandhar
+      fonts:
+        - asset: assets/fonts/hind-jalandhar/HindJalandhar-Bold.ttf
+        - asset: assets/fonts/hind-jalandhar/HindJalandhar-Regular.ttf
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter/Inter.ttf
+    - family: Karla
+      fonts:
+        - asset: assets/fonts/Karla/Karla.ttf
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins/Poppins-Bold.ttf
+        - asset: assets/fonts/Poppins/Poppins-ExtraBold.ttf
+        - asset: assets/fonts/Poppins/Poppins-SemiBold.ttf

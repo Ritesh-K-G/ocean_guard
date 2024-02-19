@@ -109,17 +109,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const SizedBox(height: 30),
                     Container(
                       width: AppHelpers.screenWidth(context) * 0.9,
-                      height: 200,
+                      height: AppHelpers.screenHeight(context) * 0.7,
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: Colors.black,
-                          width: 2.0,
+                          width: 1.0,
                         ),
                       ),
-                      child: Image.asset(
-                        'assets/images/world-map.gif',
-                        fit: BoxFit.cover
-                      )
+                      child: showMap()
                     ),
                   ],
                 ),

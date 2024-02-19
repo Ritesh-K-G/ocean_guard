@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:ocean_guard/constants/color.dart';
 import 'package:ocean_guard/features/authentication/MainAuthScreen.dart';
+import 'package:ocean_guard/features/super_admin/admin_navbar.dart';
 import 'package:ocean_guard/navbar.dart';
 import 'package:ocean_guard/utils/widgets/ImagePicker/MultiImageProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'features/cleaner/cleaner_navbar.dart';
 
-Future<void> main() async {
+
+
+void main() {
   runApp(const MyApp());
 }
 
@@ -20,6 +24,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => NavbarIndexProvider()),
+        ChangeNotifierProvider(create: (context) => AdminNavbarIndexProvider()),
+        ChangeNotifierProvider(create: (context) => CleanerNavbarIndexProvider()),
         ChangeNotifierProvider(create: (context) => MultiImageProvider())
       ],
       child: MaterialApp(
@@ -46,6 +52,6 @@ class AuthCheck extends StatefulWidget {
 class _AuthCheckState extends State<AuthCheck> {
   @override
   Widget build(BuildContext context) {
-    return AuthScreen();
+    return adminNavbar();
   }
 }
