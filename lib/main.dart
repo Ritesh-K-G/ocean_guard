@@ -49,6 +49,6 @@ class AuthCheck extends StatefulWidget {
 class _AuthCheckState extends State<AuthCheck> {
   @override
   Widget build(BuildContext context) {
-    return cleanerNavbar();
+    return adminNavbar();
   }
 }

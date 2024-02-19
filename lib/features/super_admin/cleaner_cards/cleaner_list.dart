@@ -50,10 +50,7 @@ class _CardListState extends State<CardList> {
           margin: EdgeInsets.all(8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            image: DecorationImage(
-              image: AssetImage('images/card_gradient.jpg'),
-              fit: BoxFit.cover,
-            ),
+            color: Colors.grey[400]
           ),
           child: Padding(
             padding: EdgeInsets.all(16),
