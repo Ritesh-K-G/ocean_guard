@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:ocean_guard/constants/color.dart';
 import 'package:ocean_guard/features/authentication/MainAuthScreen.dart';
@@ -6,9 +7,12 @@ import 'package:ocean_guard/navbar.dart';
 import 'package:ocean_guard/utils/widgets/ImagePicker/MultiImageProvider.dart';
 import 'package:provider/provider.dart';
 
+import 'Firebase_options.dart';
 import 'features/cleaner/cleaner_navbar.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.android);
   runApp(const MyApp());
 }
 
@@ -49,6 +53,6 @@ class AuthCheck extends StatefulWidget {
 class _AuthCheckState extends State<AuthCheck> {
   @override
   Widget build(BuildContext context) {
-    return adminNavbar();
+    return Navbar();
   }
 }

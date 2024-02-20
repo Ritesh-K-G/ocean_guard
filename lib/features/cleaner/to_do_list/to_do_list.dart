@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:ocean_guard/constants/sizes.dart';
 import 'package:ocean_guard/features/query_description/query.dart';
@@ -8,47 +9,26 @@ class todoList extends StatefulWidget {
 }
 
 class _todoListState extends State<todoList> {
-  final List<Map<String, String>> userData = [
-    {
-      'name': 'John Doe',
-      'email': 'john.doe@example.com',
-      'place': 'New York',
-      'description': 'Lorem Ipsum Lorem Ipsum'
-    },
-    {
-      'name': 'Jane Smith',
-      'email': 'jane.smith@example.com',
-      'place': 'Los Angeles',
-      'description': 'Lorem Ipsum Lorem Ipsum'
-    },
-    {
-      'name': 'Jane Smith',
-      'email': 'jane.smith@example.com',
-      'place': 'Los Angeles',
-      'description': 'Lorem Ipsum Lorem Ipsum'
-    },
-    {
-      'name': 'Jane Smith',
-      'email': 'jane.smith@example.com',
-      'place': 'Los Angeles',
-      'description': 'Lorem Ipsum Lorem Ipsum'
-    },
-    {
-      'name': 'Jane Smith',
-      'email': 'jane.smith@example.com',
-      'place': 'Los Angeles',
-      'description': 'Lorem Ipsum Lorem Ipsum'
-    },
-    {
-      'name': 'Jane Smith',
-      'email': 'jane.smith@example.com',
-      'place': 'Los Angeles',
-      'description': 'Lorem Ipsum Lorem Ipsum'
-    },
-  ];
+  List<Map<String, String>> userData = [];
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> fetchCardDetails() async {
+    final dio = Dio();
+    // late cards = await dio.get();
+  }
 
   @override
   Widget build(BuildContext context) {
+    return userData.isEmpty
+      ? Center(child: CircularProgressIndicator())
+      : myBuild();
+  }
+
+  Widget myBuild() {
     return Container(
       margin: const EdgeInsets.all(20),
       child: Column(

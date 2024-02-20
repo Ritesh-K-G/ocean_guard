@@ -43,12 +43,12 @@ class _QueryCardState extends State<QueryCard> {
                     onTap: () {},
                   ),
                 ),
-                const Positioned(
+                Positioned(
                     bottom: 16,
                     right: 16,
                     left: 16,
                     child: Text(
-                      'Juhu Chapati Beach',
+                      widget.query.place,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -62,7 +62,7 @@ class _QueryCardState extends State<QueryCard> {
             Padding(
                 padding: const EdgeInsets.all(16).copyWith(bottom: 0),
                 child: RichText(
-                  text: const TextSpan(
+                  text: TextSpan(
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.black,
@@ -75,7 +75,7 @@ class _QueryCardState extends State<QueryCard> {
                         ),
                       ),
                       TextSpan(
-                        text: 'Lorem Ipsum Lorem Ipsum',
+                        text: widget.query.description,
                         style: TextStyle(
                           color: Colors.black54,
                         ),
@@ -88,7 +88,7 @@ class _QueryCardState extends State<QueryCard> {
             Padding(
                 padding: const EdgeInsets.all(16).copyWith(bottom: 8),
                 child: RichText(
-                  text: const TextSpan(
+                  text: TextSpan(
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.black,
@@ -101,9 +101,11 @@ class _QueryCardState extends State<QueryCard> {
                         ),
                       ),
                       TextSpan(
-                        text: 'Unresolved',
+                        text: widget.query.resolved
+                          ? 'Resolved'
+                          : 'Unresolved',
                         style: TextStyle(
-                          color: Colors.red,
+                          color: widget.query.resolved ? Colors.green : Colors.red,
                         ),
                       ),
                     ],

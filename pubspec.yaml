@@ -19,9 +19,12 @@ dependencies:
   decorated_text: ^0.1.0
   location: ^5.0.3
   geocoding: ^2.1.1
-  dio: ^5.4.0
+  dio: ^5.4.1
   cached_network_image: ^3.3.1
   photo_view: ^0.14.0
+  firebase_storage: ^11.6.6
+  cloud_firestore: ^4.15.5
+  firebase_core: ^2.25.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
