@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
@@ -254,32 +255,50 @@ class _SignUpState extends State<SignUp> {
                 children: [
                   ElevatedButton(
                     onPressed: () async {
-                      isCleaner == true
-                          ?
-                      (
+                      try {
+                        if (isCleaner) {
+                          final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                          );
+                          final userId=credential.user?.uid;
+                          final userData = {
+                            'firstName': _firstNameController.text,
+                            'lastName': _lastNameController.text,
+                            'authority': 1
+                          };
 
-                          FirebaseAuth.instance.createUserWithEmailAndPassword(
-                              email: _emailController.text,
-                              password: _passwordController.text).then((value) =>
+                          // Store additional user data in Firestore
+                          await FirebaseFirestore.instance.collection('users').doc(userId).set(userData);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const CleanerAddress()),
+                          );
+                        } else {
+                          final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                          );
+                          final userId=credential.user?.uid;
+                          final userData = {
+                            'firstName': _firstNameController.text,
+                            'lastName': _lastNameController.text,
+                            'authority': 2
+                          };
 
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: ((context) => const CleanerAddress()))))
-
-                      )
-                          :
-                      (
-                          FirebaseAuth.instance.createUserWithEmailAndPassword(
-                              email: _emailController.text,
-                              password: _passwordController.text).then((value) => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: ((context) => Navbar()))))
-
-                      );
-
+                          // Store additional user data in Firestore
+                          await FirebaseFirestore.instance.collection('users').doc(userId).set(userData);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Navbar()),
+                          );
+                        }
+                      } catch (e) {
+                        // Handle error
+                        print(e);
+                      }
                     },
+
                     style: AppButtonStyles.authButtons.copyWith(
                       minimumSize: MaterialStatePropertyAll(
                           Size(AppHelpers.screenWidth(context) * 0.8, 50)),
