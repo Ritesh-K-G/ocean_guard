@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ocean_guard/constants/color.dart';
@@ -254,14 +255,30 @@ class _SignUpState extends State<SignUp> {
                   ElevatedButton(
                     onPressed: () async {
                       isCleaner == true
-                          ? Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) => CleanerAddress())))
-                          : Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) => Navbar())));
+                          ?
+                      (
+
+                          FirebaseAuth.instance.createUserWithEmailAndPassword(
+                              email: _emailController.text,
+                              password: _passwordController.text).then((value) =>
+
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: ((context) => const CleanerAddress()))))
+
+                      )
+                          :
+                      (
+                          FirebaseAuth.instance.createUserWithEmailAndPassword(
+                              email: _emailController.text,
+                              password: _passwordController.text).then((value) => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) => Navbar()))))
+
+                      );
+
                     },
                     style: AppButtonStyles.authButtons.copyWith(
                       minimumSize: MaterialStatePropertyAll(
@@ -306,16 +323,32 @@ class _SignUpState extends State<SignUp> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       isCleaner == true
-                          ? Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: ((context) => CleanerAddress())))
-                          : Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: ((context) => Navbar())));
+                          ?
+                      (
+
+                        FirebaseAuth.instance.createUserWithEmailAndPassword(
+                            email: _emailController.text,
+                            password: _passwordController.text).then((value) =>
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) => const CleanerAddress()))))
+
+                      )
+                          :
+                      (
+                        FirebaseAuth.instance.createUserWithEmailAndPassword(
+                            email: _emailController.text,
+                            password: _passwordController.text).then((value) => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) => Navbar()))))
+
+                      );
+
                     },
                     style: AppButtonStyles.googleButton.copyWith(
                         shape:

@@ -11,7 +11,7 @@ class Navbar extends StatelessWidget {
 
   final List<dynamic> screens = [
     const ProfileScreen(),
-    QueriesDashBoard(),
+    const QueriesDashBoard(),
     const QueryForm()
   ];
 

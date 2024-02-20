@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "546537129822",
+    "project_id": "oceanguard-5aea0",
+    "storage_bucket": "oceanguard-5aea0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:546537129822:android:5c017cff56f4435990b1cf",
+        "android_client_info": {
+          "package_name": "com.example.ocean_guard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "546537129822-92ciolr4bnh24kq33m1iii7276v1hsrl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ocean_guard",
+            "certificate_hash": "753647d5934e1ecb75a2345fe387358ca56dda16"
+          }
+        },
+        {
+          "client_id": "546537129822-flr8fms8oknbiqv8344sqj6ddej6vmc6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6fmaKFVf1m7a-6AB7n0h0juZqIOmO6Z0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "546537129822-flr8fms8oknbiqv8344sqj6ddej6vmc6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "546537129822-fkke207cl6vl9nvr06d2nr7p5ch4dn0r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.oceangUARD.APP"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

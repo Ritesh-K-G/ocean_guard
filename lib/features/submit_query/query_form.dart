@@ -6,7 +6,6 @@ import 'package:ocean_guard/utils/helpers/wrappers.dart';
 import 'package:ocean_guard/utils/styles/button.dart';
 import 'package:ocean_guard/utils/styles/text.dart';
 import 'package:ocean_guard/utils/widgets/ImagePicker/MultiImageProvider.dart';
-import 'package:ocean_guard/utils/widgets/Maps/map.dart';
 
 class QueryForm extends StatefulWidget {
   const QueryForm({super.key});
@@ -85,7 +84,7 @@ class _QueryFormState extends State<QueryForm> {
                         width: 2.0,
                       ),
                     ),
-                    child: showMap()
+                    child: const showMap()
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(

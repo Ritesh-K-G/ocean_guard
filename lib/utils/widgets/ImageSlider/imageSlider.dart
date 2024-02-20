@@ -5,7 +5,7 @@ import 'package:ocean_guard/utils/widgets/ImageSlider/imageViewer.dart';
 class ImageSliderWidget extends StatefulWidget {
   final List<dynamic> imageUrls;
 
-  ImageSliderWidget({required this.imageUrls});
+  const ImageSliderWidget({super.key, required this.imageUrls});
 
   @override
   _ImageSliderWidgetState createState() => _ImageSliderWidgetState();

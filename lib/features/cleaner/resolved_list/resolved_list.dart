@@ -3,6 +3,8 @@ import 'package:ocean_guard/constants/sizes.dart';
 import 'package:ocean_guard/features/query_description/query.dart';
 
 class ResolvedList extends StatefulWidget {
+  const ResolvedList({super.key});
+
   @override
   _ResolvedListState createState() => _ResolvedListState();
 }

@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:iconsax/iconsax.dart';
 
 class SignIn extends StatefulWidget {
-  const SignIn({Key? key});
+  const SignIn({super.key, Key? Key});
 
   @override
   State<SignIn> createState() => _SignInState();

@@ -116,7 +116,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           width: 1.0,
                         ),
                       ),
-                      child: showMap()
+                      child: const showMap()
                     ),
                   ],
                 ),

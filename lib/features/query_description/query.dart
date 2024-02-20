@@ -123,7 +123,7 @@ class _queryState extends State<query> {
                     indent: 10,
                     endIndent: 10,
                   ),
-                  DescriptionCard(title: 'Description', initialDescription: 'Hehe'),
+                  const DescriptionCard(title: 'Description', initialDescription: 'Hehe'),
                   const SizedBox(height: 15),
                   const Padding(
                     padding: EdgeInsets.all(20),
