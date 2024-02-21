@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ocean_guard/constants/color.dart';
 import 'package:ocean_guard/features/authentication/MainAuthScreen.dart';
@@ -54,6 +56,34 @@ class AuthCheck extends StatefulWidget {
 class _AuthCheckState extends State<AuthCheck> {
   @override
   Widget build(BuildContext context) {
-    return const AuthScreen();
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+               if (snapshot.hasData) {
+          return FutureBuilder<DocumentSnapshot>(
+            future: FirebaseFirestore.instance.collection('users').doc(snapshot.data!.uid).get(),
+            builder: (context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
+              if (userSnapshot.connectionState == ConnectionState.done) {
+                // Assuming 'authority' is a field in your user document
+                final authority = userSnapshot.data!['authority'];
+                switch (authority) {
+                  case 0:
+                    return adminNavbar();
+                  case 1:
+                    return cleanerNavbar();
+                  default:
+                    return Navbar();
+                }
+              }
+              return CircularProgressIndicator(); // Show loading while fetching user data
+            },
+          );
+        } else {
+
+          return const AuthScreen();
+        }
+      },
+    );
+
   }
 }
