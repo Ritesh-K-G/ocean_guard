@@ -1,6 +1,9 @@
+import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ocean_guard/constants/sizes.dart';
 import 'package:ocean_guard/features/query_description/query.dart';
+import 'package:ocean_guard/models/queryModel.dart';
 
 class ResolvedList extends StatefulWidget {
   @override
@@ -8,16 +11,37 @@ class ResolvedList extends StatefulWidget {
 }
 
 class _ResolvedListState extends State<ResolvedList> {
-  List<Map<String, String>> userData = [];
+  List<QueryModel> cardsData = [];
+  String? userID = "";
+  bool serverCalled = false;
 
   @override
   void initState() {
     super.initState();
+    (()async =>{
+      await fetchCardDetails()
+    })();
+  }
+
+  List<QueryModel> convertToQueryModels(List<dynamic> list) {
+    return list.map((item) => QueryModel.fromMap(item)).toList();
+  }
+  Future<void> fetchCardDetails() async {
+    final dio = Dio();
+    // userID = FirebaseAuth.instance.currentUser?.uid;
+    userID = 'nKLVSheOXfTsJsXssA3gzh3SEX92';
+    var res = await dio.get('https://backend-kb2pqsadra-et.a.run.app/viewComplaintsResolved?user=$userID');
+    print(res);
+    cardsData = convertToQueryModels(res.data);
+    print(cardsData);
+    setState(() {
+      serverCalled = true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return userData.isEmpty
+    return serverCalled == false
         ? Center(child: CircularProgressIndicator())
         : myBuild();
   }
@@ -47,16 +71,16 @@ class _ResolvedListState extends State<ResolvedList> {
           ),
           Expanded(
               child: ListView.builder(
-                itemCount: userData.length,
+                itemCount: cardsData.length,
                 itemBuilder: (context, index) {
-                  final user = userData[index];
+                  final user = cardsData[index];
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const query(
-                              itemID: '',
+                            builder: (context) => query(
+                              cardData: user,
                             )),
                       );
                     },
@@ -71,8 +95,8 @@ class _ResolvedListState extends State<ResolvedList> {
                             alignment: Alignment.center,
                             children: [
                               Ink.image(
-                                image: const NetworkImage(
-                                  'https://i.natgeofe.com/n/88cdf805-08d0-4ce6-8195-230cc46bc1b1/46.jpg',
+                                image: NetworkImage(
+                                  user.resolvedImages[0],
                                 ),
                                 height: 240,
                                 fit: BoxFit.cover,
@@ -85,7 +109,7 @@ class _ResolvedListState extends State<ResolvedList> {
                                   right: 16,
                                   left: 16,
                                   child: Text(
-                                    '${user['place']}',
+                                    '${user.place}',
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white,
@@ -110,7 +134,7 @@ class _ResolvedListState extends State<ResolvedList> {
                                       ),
                                     ),
                                     TextSpan(
-                                      text: '${user['description']}',
+                                      text: '${user.description}',
                                       style: const TextStyle(
                                         color: Colors.black54,
                                       ),

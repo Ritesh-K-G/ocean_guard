@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:location/location.dart' as location_package;
+import 'package:geocoding/geocoding.dart';
 import 'package:ocean_guard/constants/color.dart';
 import 'package:ocean_guard/features/map/showMap.dart';
 import 'package:ocean_guard/utils/helpers/AppHelpers.dart';
@@ -13,6 +17,46 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  late location_package.LocationData _currentLocation;
+  late StreamSubscription<location_package.LocationData> _locationSubscription;
+  late String address = '';
+
+  void _initLocationService() {
+    final location = location_package.Location();
+    location.requestPermission().then((granted) {
+      if (granted == location_package.PermissionStatus.granted) {
+        _locationSubscription = location.onLocationChanged.listen((location_package.LocationData result) {
+          _currentLocation = result;
+          convertCoordinatesToAddress(result.latitude!, result.longitude!);
+        });
+      }
+    });
+  }
+
+  void convertCoordinatesToAddress(double latitude, double longitude) async {
+    try {
+      List<Placemark> placemarks =
+      await placemarkFromCoordinates(latitude, longitude);
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks[0];
+        if(mounted) {
+          setState(() {
+            address = '${place.subLocality}, ${place.locality}';
+          });
+        }
+      }
+    } catch (e) {
+      print("Error converting coordinates to address: $e");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initLocationService();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -90,16 +134,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         color: AppColors.myCommentGray,
                       ),
                     ),
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
+                        const Icon(
                             Icons.location_on_rounded,
                             color: AppColors.myPurpleBlue
                         ),
                         Text(
-                          'Address',
-                          style: TextStyle(
+                          address,
+                          style: const TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 13,
                           ),
@@ -109,14 +153,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const SizedBox(height: 30),
                     Container(
                       width: AppHelpers.screenWidth(context) * 0.9,
-                      height: AppHelpers.screenHeight(context) * 0.7,
+                      height: AppHelpers.screenHeight(context) * 0.5,
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: Colors.black,
                           width: 1.0,
                         ),
                       ),
-                      child: showMap()
+                      child: const showMap()
                     ),
                   ],
                 ),

@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class QueryModel {
   final String queryID;
   final String user;
@@ -11,6 +9,7 @@ class QueryModel {
   final double longitude;
   final bool resolved;
   final int date;
+  final List<String> resolvedImages;
 
   QueryModel({
       required this.queryID,
@@ -22,7 +21,8 @@ class QueryModel {
       required this.latitude,
       required this.longitude,
       required this.resolved,
-      required this.date
+      required this.date,
+      required this.resolvedImages
       });
 
   factory QueryModel.fromMap(Map<String, dynamic> map) {
@@ -37,6 +37,7 @@ class QueryModel {
       longitude: map['longitude'],
       resolved: map['resolved'] ?? false,
       date: map['date'] ?? 0,
+      resolvedImages: map['imagesResolved']!=null ? List<String>.from(map['imagesResolved']) : []
     );
   }
 

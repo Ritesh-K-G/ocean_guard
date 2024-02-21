@@ -1,20 +1,22 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:ocean_guard/constants/color.dart';
+import 'package:ocean_guard/features/cleaner/resolving_form/resolving_form.dart';
 import 'package:ocean_guard/models/queryModel.dart';
 import 'package:ocean_guard/utils/helpers/AppHelpers.dart';
+import 'package:ocean_guard/utils/styles/button.dart';
 import 'package:ocean_guard/utils/widgets/ImageSlider/imageSlider.dart';
 import 'package:ocean_guard/utils/widgets/paraPrint/description.dart';
 
-class query extends StatefulWidget {
+class queryDescription extends StatefulWidget {
   final QueryModel cardData;
-  const query({super.key, required this.cardData});
+  const queryDescription({super.key, required this.cardData});
 
   @override
-  State<query> createState() => _queryState();
+  State<queryDescription> createState() => _queryDescription();
 }
 
-class _queryState extends State<query> {
+class _queryDescription extends State<queryDescription> {
 
   late QueryModel cardData;
 
@@ -144,6 +146,28 @@ class _queryState extends State<query> {
                     color: Colors.black,
                     indent: 10,
                     endIndent: 10,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => resolveForm(queryID: cardData.queryID)));
+                    },
+                    style: AppButtonStyles.authButtons.copyWith(
+                      backgroundColor: const MaterialStatePropertyAll(AppColors.myPurple),
+                      minimumSize: MaterialStatePropertyAll(Size(AppHelpers.screenWidth(context)*0.9, 50)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                    ),
+                    child: const Text(
+                      "Mark as Resolved",
+                      style: TextStyle(
+                        fontFamily: 'Hind',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
                   )
                 ])),
       ),

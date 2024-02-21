@@ -19,8 +19,8 @@ class _QueryCardState extends State<QueryCard> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => const query(
-                itemID: '',
+              builder: (context) => query(
+                cardData: widget.query,
               )),
         );
       },
@@ -34,8 +34,10 @@ class _QueryCardState extends State<QueryCard> {
               alignment: Alignment.center,
               children: [
                 Ink.image(
-                  image: const NetworkImage(
-                    'https://i.natgeofe.com/n/88cdf805-08d0-4ce6-8195-230cc46bc1b1/46.jpg',
+                  image: NetworkImage(
+                    widget.query.resolved
+                        ? widget.query.resolvedImages[0]
+                        : widget.query.images[0],
                   ),
                   height: 240,
                   fit: BoxFit.cover,

@@ -43,6 +43,10 @@ class _QueryFormState extends State<QueryForm> {
   @override
   void initState() {
     super.initState();
+    _currentLocation = LocationData.fromMap({
+      "latitude": 28.7041,
+      "longitude": 77.1025,
+    });
     _initLocationService();
   }
 
@@ -108,90 +112,108 @@ class _QueryFormState extends State<QueryForm> {
                   const MultiImageUploader(),
                   Container(
                     width: AppHelpers.screenWidth(context) * 0.9,
-                    height: AppHelpers.screenHeight(context) * 0.7,
+                    height: AppHelpers.screenHeight(context) * 0.5,
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: Colors.black,
                         width: 2.0,
                       ),
                     ),
-                    child: showMap()
+                    child: const showMap()
                   ),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Consumer<MultiImageProvider>(builder: (context, provider, child) {
-                        return ElevatedButton(
+                      Consumer<MultiImageProvider>(
+                        builder: (context, provider, child) {
+                          return ElevatedButton(
                             onPressed: () async {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return const AlertDialog(
-                                    content: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        CircularProgressIndicator(),
-                                        SizedBox(height: 16),
-                                        Text('Uploading data...'),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              );
                               if (_formkey.currentState!.validate() &&
                                   imageList.isNotEmpty) {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          CircularProgressIndicator(),
+                                          SizedBox(height: 16),
+                                          Text('Uploading data...'),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
                                 List<String> imageUrls = [];
 
-                                Reference storageReference = FirebaseStorage
-                                    .instance.ref().child('queries/');
+                                Reference storageReference =
+                                FirebaseStorage.instance.ref().child('queries/');
 
                                 for (int i = 0; i < imageList.length; i++) {
-                                  String fileExtension = imageList[i].path
-                                      .split('.')
-                                      .last;
-                                  String timestamp = DateTime.now()
-                                      .toIso8601String();
-                                  String fileName = 'query_$timestamp' + '_' +
+                                  String fileExtension =
+                                      imageList[i].path.split('.').last;
+                                  String timestamp =
+                                  DateTime.now().toIso8601String();
+                                  String fileName = 'query_$timestamp' +
+                                      '_' +
                                       '$i.$fileExtension';
                                   Reference imageRef = storageReference.child(
                                       fileName);
                                   await imageRef.putFile(imageList[i]);
-                                  String imageUrl = await imageRef
-                                      .getDownloadURL();
+                                  String imageUrl =
+                                  await imageRef.getDownloadURL();
                                   imageUrls.add(imageUrl);
                                 }
 
                                 final dio = Dio();
-                                print(await dio.post('https://backend-kb2pqsadra-et.a.run.app/addComplaint', data: {
-                                  'images': imageUrls,
-                                  'latitude': _currentLocation.latitude,
-                                  'longitude': _currentLocation.longitude,
-                                  'user': 'Ishaan'
-                                }));
-
-                                _descController.clear();
-                                _sliderValue = 1.0;
-                                provider.clearImageList();
-                                Navigator.pop(context);
-                              };
-
+                                try {
+                                  var res = await dio.post(
+                                    'https://backend-kb2pqsadra-et.a.run.app/addComplaint',
+                                    data: {
+                                      'images': imageUrls,
+                                      'latitude': _currentLocation.latitude,
+                                      'longitude': _currentLocation.longitude,
+                                      'description': _descController.text,
+                                      'urgency': _sliderValue,
+                                      'user': 'Ishaan'
+                                    });
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content: Text('Success!!'),
+                                  ));
+                                }
+                                catch(e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content: Text('Bad Request!!'),
+                                  ));
+                                }finally{
+                                  _descController.clear();
+                                  _sliderValue = 1.0;
+                                  provider.clearImageList();
+                                  Navigator.pop(context);
+                                }
+                              }
                             },
                             style: AppButtonStyles.authButtons.copyWith(
-                                backgroundColor: const MaterialStatePropertyAll(AppColors.myBlue),
-                                minimumSize: MaterialStatePropertyAll(
-                                    Size(AppHelpers.screenWidth(context) * 0.8, 50)),
-                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                backgroundColor:
+                                MaterialStateProperty.all(AppColors.myBlue),
+                                minimumSize: MaterialStateProperty.all(
+                                    Size(AppHelpers.screenWidth(context) *
+                                        0.8,
+                                        50)),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    )
-                                )
-                            ),
+                                      borderRadius:
+                                      BorderRadius.circular(10.0),
+                                    ))),
                             child: const Text(
                               "Submit",
                               style: AppTextStyles.buttontext,
-                            )
-                        );}
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
