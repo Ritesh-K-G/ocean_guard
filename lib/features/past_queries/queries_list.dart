@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ocean_guard/constants/sizes.dart';
 import 'package:ocean_guard/features/past_queries/query_card.dart';
@@ -13,10 +14,12 @@ class QueriesDashBoard extends StatefulWidget {
 
 class _QueriesDashBoardState extends State<QueriesDashBoard> {
   List<QueryModel> sampleQueries = [];
+  late String? userID;
 
   @override
   void initState() {
     super.initState();
+    userID = FirebaseAuth.instance.currentUser?.uid;
     (()async =>{
       await fetchCardDetails()
     })();
@@ -27,7 +30,7 @@ class _QueriesDashBoardState extends State<QueriesDashBoard> {
   Future<void> fetchCardDetails() async {
     print('0called');
     final dio = Dio();
-    final cards = await dio.get('https://backend-kb2pqsadra-et.a.run.app/viewComplaintsUser?user=ishaan');
+    final cards = await dio.get('https://backend-kb2pqsadra-et.a.run.app/viewComplaintsUser?user=$userID');
     print(cards.data);
     sampleQueries = convertToQueryModels(cards.data);
     setState(() {});
