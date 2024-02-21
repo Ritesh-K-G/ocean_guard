@@ -14,7 +14,6 @@ class showMap extends StatefulWidget {
 
 class _showMapState extends State<showMap> {
   late LocationData _currentLocation;
-  LatLng source = const LatLng(28.6139, 77.2090);
   late StreamSubscription<LocationData> _locationSubscription;
 
   final MapController _mapController = MapController();
@@ -51,12 +50,12 @@ class _showMapState extends State<showMap> {
     _markers.clear();
     _markers.add(
       Marker(
-        width: 30.0,
-        height: 30.0,
+        width: 50.0,
+        height: 50.0,
         point: LatLng(locationData.latitude!, locationData.longitude!),
         child: const Icon(
           Icons.location_on_rounded,
-          color: Colors.blue,
+          color: Colors.red,
         ),
       ),
     );
@@ -75,19 +74,9 @@ class _showMapState extends State<showMap> {
               ),
               children: [
                 TileLayer(
-                  urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                 ),
-                MarkerLayer(markers: [
-                  Marker(
-                    width: 30.0,
-                    height: 30.0,
-                    point: source,
-                    child: const Icon(
-                      Icons.location_on_rounded,
-                      color: Colors.red,
-                    ),
-                  ),
-                ])
+                MarkerLayer(markers: _markers)
               ],
             ),
           ),

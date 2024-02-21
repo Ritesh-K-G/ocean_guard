@@ -1,6 +1,10 @@
+import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ocean_guard/constants/sizes.dart';
+import 'package:ocean_guard/features/cleaner/queryDescription/queryDescription.dart';
 import 'package:ocean_guard/features/query_description/query.dart';
+import 'package:ocean_guard/models/queryModel.dart';
 
 class todoList extends StatefulWidget {
   const todoList({super.key});
@@ -10,47 +14,41 @@ class todoList extends StatefulWidget {
 }
 
 class _todoListState extends State<todoList> {
-  final List<Map<String, String>> userData = [
-    {
-      'name': 'John Doe',
-      'email': 'john.doe@example.com',
-      'place': 'New York',
-      'description': 'Lorem Ipsum Lorem Ipsum'
-    },
-    {
-      'name': 'Jane Smith',
-      'email': 'jane.smith@example.com',
-      'place': 'Los Angeles',
-      'description': 'Lorem Ipsum Lorem Ipsum'
-    },
-    {
-      'name': 'Jane Smith',
-      'email': 'jane.smith@example.com',
-      'place': 'Los Angeles',
-      'description': 'Lorem Ipsum Lorem Ipsum'
-    },
-    {
-      'name': 'Jane Smith',
-      'email': 'jane.smith@example.com',
-      'place': 'Los Angeles',
-      'description': 'Lorem Ipsum Lorem Ipsum'
-    },
-    {
-      'name': 'Jane Smith',
-      'email': 'jane.smith@example.com',
-      'place': 'Los Angeles',
-      'description': 'Lorem Ipsum Lorem Ipsum'
-    },
-    {
-      'name': 'Jane Smith',
-      'email': 'jane.smith@example.com',
-      'place': 'Los Angeles',
-      'description': 'Lorem Ipsum Lorem Ipsum'
-    },
-  ];
+  List<QueryModel> cardsData = [];
+  String? userID = "";
+  bool serverCalled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    (()async =>{
+      await fetchCardDetails()
+    })();
+  }
+  List<QueryModel> convertToQueryModels(List<dynamic> list) {
+    return list.map((item) => QueryModel.fromMap(item)).toList();
+  }
+  Future<void> fetchCardDetails() async {
+    final dio = Dio();
+    // userID = FirebaseAuth.instance.currentUser?.uid;
+    userID = 'nKLVSheOXfTsJsXssA3gzh3SEX92';
+    var res = await dio.get('https://backend-kb2pqsadra-et.a.run.app/viewComplaintsUnresolved?user=${userID}');
+    print(res);
+    cardsData = convertToQueryModels(res.data);
+    print(cardsData);
+    setState(() {
+      serverCalled = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    return serverCalled == false
+      ? Center(child: CircularProgressIndicator())
+      : myBuild();
+  }
+
+  Widget myBuild() {
     return Container(
       margin: const EdgeInsets.all(20),
       child: Column(
@@ -75,16 +73,16 @@ class _todoListState extends State<todoList> {
           ),
           Expanded(
               child: ListView.builder(
-                itemCount: userData.length,
+                itemCount: cardsData.length,
                 itemBuilder: (context, index) {
-                  final user = userData[index];
+                  final user = cardsData[index];
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const query(
-                              itemID: '',
+                            builder: (context) => queryDescription(
+                              cardData: user,
                             )),
                       );
                     },
@@ -98,8 +96,8 @@ class _todoListState extends State<todoList> {
                             alignment: Alignment.center,
                             children: [
                               Ink.image(
-                                image: const NetworkImage(
-                                  'https://i.natgeofe.com/n/88cdf805-08d0-4ce6-8195-230cc46bc1b1/46.jpg',
+                                image: NetworkImage(
+                                  user.images[0],
                                 ),
                                 height: 240,
                                 fit: BoxFit.cover,
@@ -112,7 +110,7 @@ class _todoListState extends State<todoList> {
                                   right: 16,
                                   left: 16,
                                   child: Text(
-                                    '${user['place']}',
+                                    '${user.place}',
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white,
@@ -139,7 +137,7 @@ class _todoListState extends State<todoList> {
                                       ),
                                     ),
                                     TextSpan(
-                                      text: '${user['description']}',
+                                      text: '${user.description}',
                                       style: const TextStyle(
                                         color: Colors.black54,
                                       ),

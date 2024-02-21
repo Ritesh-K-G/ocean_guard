@@ -1,22 +1,44 @@
 class QueryModel {
   final String queryID;
-  final String queryDescription;
-  final List<String> queryImages;
+  final String user;
+  final String description;
+  final String place;
+  final List<String> images;
+  final int urgency;
+  final double latitude;
+  final double longitude;
   final bool resolved;
+  final int date;
+  final List<String> resolvedImages;
 
   QueryModel({
-    required this.queryID,
-    required this.queryDescription,
-    required this.queryImages,
-    required this.resolved
-  });
+      required this.queryID,
+      required this.user,
+      required this.description,
+      required this.place,
+      required this.images,
+      required this.urgency,
+      required this.latitude,
+      required this.longitude,
+      required this.resolved,
+      required this.date,
+      required this.resolvedImages
+      });
 
   factory QueryModel.fromMap(Map<String, dynamic> map) {
     return QueryModel(
-        queryID: map['itemID'],
-        queryDescription: map['queryDescription'],
-        queryImages: map['queryImages'],
-        resolved: map['resolved'],
+      queryID: map['queryID'] ?? '',
+      user: map['user'] ?? '',
+      description: map['description'] ?? '',
+      place: map['place'] ?? '',
+      images: map['images']!=null ? List<String>.from(map['images']) : [],
+      urgency: map['urgency'] ?? 0,
+      latitude: map['latitude'],
+      longitude: map['longitude'],
+      resolved: map['resolved'] ?? false,
+      date: map['date'] ?? 0,
+      resolvedImages: map['imagesResolved']!=null ? List<String>.from(map['imagesResolved']) : []
     );
   }
+
 }
