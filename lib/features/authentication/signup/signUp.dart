@@ -265,7 +265,8 @@ class _SignUpState extends State<SignUp> {
                           final userData = {
                             'firstName': _firstNameController.text,
                             'lastName': _lastNameController.text,
-                            'authority': 1
+                            'authority': 1,
+                            'pic':"gs://oceanguard-5aea0.appspot.com/icon.jfif"
                           };
 
                           // Store additional user data in Firestore
@@ -283,7 +284,8 @@ class _SignUpState extends State<SignUp> {
                           final userData = {
                             'firstName': _firstNameController.text,
                             'lastName': _lastNameController.text,
-                            'authority': 2
+                            'authority': 2,
+                            'pic':"gs://oceanguard-5aea0.appspot.com/icon.jfif"
                           };
 
                           // Store additional user data in Firestore
