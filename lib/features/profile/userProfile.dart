@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart' as location_package;
 import 'package:geocoding/geocoding.dart';
 import 'package:ocean_guard/constants/color.dart';
+import 'package:ocean_guard/features/authentication/MainAuthScreen.dart';
 import 'package:ocean_guard/features/map/showMap.dart';
 import 'package:ocean_guard/utils/helpers/AppHelpers.dart';
 import 'package:ocean_guard/utils/styles/button.dart';
@@ -175,7 +177,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onTap: null,
             ),
             ElevatedButton(
-              onPressed: null,
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                // Navigate to the login screen after logout
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AuthScreen()));
+              },
               style: AppButtonStyles.authButtons.copyWith(
                 backgroundColor: const MaterialStatePropertyAll(AppColors.myBlue),
                 minimumSize: MaterialStatePropertyAll(

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ocean_guard/constants/color.dart';
@@ -253,16 +255,50 @@ class _SignUpState extends State<SignUp> {
                 children: [
                   ElevatedButton(
                     onPressed: () async {
-                      isCleaner == true
-                          ? Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) => CleanerAddress())))
-                          : Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) => Navbar())));
+                      try {
+                        if (isCleaner) {
+                          final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                          );
+                          final userId=credential.user?.uid;
+                          final userData = {
+                            'firstName': _firstNameController.text,
+                            'lastName': _lastNameController.text,
+                            'authority': 1
+                          };
+
+                          // Store additional user data in Firestore
+                          await FirebaseFirestore.instance.collection('users').doc(userId).set(userData);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const CleanerAddress()),
+                          );
+                        } else {
+                          final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                          );
+                          final userId=credential.user?.uid;
+                          final userData = {
+                            'firstName': _firstNameController.text,
+                            'lastName': _lastNameController.text,
+                            'authority': 2
+                          };
+
+                          // Store additional user data in Firestore
+                          await FirebaseFirestore.instance.collection('users').doc(userId).set(userData);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Navbar()),
+                          );
+                        }
+                      } catch (e) {
+                        // Handle error
+                        print(e);
+                      }
                     },
+
                     style: AppButtonStyles.authButtons.copyWith(
                       minimumSize: MaterialStatePropertyAll(
                           Size(AppHelpers.screenWidth(context) * 0.8, 50)),
@@ -306,16 +342,32 @@ class _SignUpState extends State<SignUp> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       isCleaner == true
-                          ? Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: ((context) => CleanerAddress())))
-                          : Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: ((context) => Navbar())));
+                          ?
+                      (
+
+                        FirebaseAuth.instance.createUserWithEmailAndPassword(
+                            email: _emailController.text,
+                            password: _passwordController.text).then((value) =>
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) => const CleanerAddress()))))
+
+                      )
+                          :
+                      (
+                        FirebaseAuth.instance.createUserWithEmailAndPassword(
+                            email: _emailController.text,
+                            password: _passwordController.text).then((value) => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) => Navbar()))))
+
+                      );
+
                     },
                     style: AppButtonStyles.googleButton.copyWith(
                         shape:

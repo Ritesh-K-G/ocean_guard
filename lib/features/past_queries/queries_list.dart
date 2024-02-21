@@ -5,7 +5,7 @@ import 'package:ocean_guard/features/past_queries/query_card.dart';
 import 'package:ocean_guard/models/queryModel.dart';
 
 class QueriesDashBoard extends StatefulWidget {
-  QueriesDashBoard({Key? key}) : super(key: key);
+  const QueriesDashBoard({Key? key}) : super(key: key);
 
   @override
   _QueriesDashBoardState createState() => _QueriesDashBoardState();

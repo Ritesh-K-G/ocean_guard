@@ -10,9 +10,9 @@ class cleanerNavbar extends StatelessWidget {
   cleanerNavbar({super.key});
 
   final List<dynamic> screens = [
-    todoList(),
-    ResolvedList(),
-    ProfileScreen()
+    const todoList(),
+    const ResolvedList(),
+    const ProfileScreen()
   ];
 
   @override

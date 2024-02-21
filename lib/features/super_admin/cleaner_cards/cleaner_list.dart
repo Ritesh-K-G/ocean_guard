@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ocean_guard/constants/color.dart';
 
 class CardList extends StatefulWidget {
+  const CardList({super.key});
+
   @override
   _CardListState createState() => _CardListState();
 }
@@ -47,38 +48,38 @@ class _CardListState extends State<CardList> {
       itemBuilder: (context, index) {
         final user = userData[index];
         return Container(
-          margin: EdgeInsets.all(8),
+          margin: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             color: Colors.grey[400]
           ),
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Name: ${user['name']}',
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 14,
                       color: Colors.black,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text('Email: ${user['email']}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text('Place: ${user['place']}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Row(
                   children: [
                     const SizedBox(width: 8),

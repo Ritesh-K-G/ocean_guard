@@ -9,8 +9,8 @@ class adminNavbar extends StatelessWidget {
   adminNavbar({super.key});
 
   final List<dynamic> screens = [
-    CardList(),
-    ProfileScreen()
+    const CardList(),
+    const ProfileScreen()
   ];
 
   @override

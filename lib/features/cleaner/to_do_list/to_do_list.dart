@@ -7,6 +7,8 @@ import 'package:ocean_guard/features/query_description/query.dart';
 import 'package:ocean_guard/models/queryModel.dart';
 
 class todoList extends StatefulWidget {
+  const todoList({super.key});
+
   @override
   _todoListState createState() => _todoListState();
 }

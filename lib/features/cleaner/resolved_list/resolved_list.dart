@@ -6,6 +6,8 @@ import 'package:ocean_guard/features/query_description/query.dart';
 import 'package:ocean_guard/models/queryModel.dart';
 
 class ResolvedList extends StatefulWidget {
+  const ResolvedList({super.key});
+
   @override
   _ResolvedListState createState() => _ResolvedListState();
 }

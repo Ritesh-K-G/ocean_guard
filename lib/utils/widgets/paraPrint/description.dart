@@ -5,7 +5,7 @@ class DescriptionCard extends StatefulWidget {
   final String title;
   final String initialDescription;
 
-  DescriptionCard({required this.title, required this.initialDescription});
+  const DescriptionCard({super.key, required this.title, required this.initialDescription});
 
   @override
   _DescriptionCardState createState() => _DescriptionCardState();
@@ -18,7 +18,7 @@ class _DescriptionCardState extends State<DescriptionCard> {
   Widget build(BuildContext context) {
     return Container(
       width: AppHelpers.screenWidth(context)*0.95,
-      padding: EdgeInsets.all(12),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         color: Colors.white,
@@ -27,7 +27,7 @@ class _DescriptionCardState extends State<DescriptionCard> {
             color: Colors.grey.withOpacity(0.3),
             spreadRadius: 2,
             blurRadius: 5,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -36,13 +36,13 @@ class _DescriptionCardState extends State<DescriptionCard> {
         children: [
           Text(
             widget.title,
-            style: TextStyle(
+            style: const TextStyle(
               fontFamily: 'Hind',
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           GestureDetector(
             onTap: () {
               setState(() {
@@ -51,7 +51,7 @@ class _DescriptionCardState extends State<DescriptionCard> {
             },
             child: Text(
               isExpanded ? widget.initialDescription : _getDisplayText(),
-              style: TextStyle(
+              style: const TextStyle(
                 fontFamily: 'Hind',
                 fontSize: 16,
                 color: Colors.black87,
@@ -65,7 +65,7 @@ class _DescriptionCardState extends State<DescriptionCard> {
                   isExpanded = true;
                 });
               },
-              child: Text(
+              child: const Text(
                 '...Read More',
                 style: TextStyle(
                   fontSize: 16,
@@ -81,7 +81,7 @@ class _DescriptionCardState extends State<DescriptionCard> {
 
   String _getDisplayText() {
     if (widget.initialDescription.length > 150) {
-      return widget.initialDescription.substring(0, 150) + '...';
+      return '${widget.initialDescription.substring(0, 150)}...';
     } else {
       return widget.initialDescription;
     }
