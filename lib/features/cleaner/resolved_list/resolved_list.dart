@@ -30,8 +30,8 @@ class _ResolvedListState extends State<ResolvedList> {
   }
   Future<void> fetchCardDetails() async {
     final dio = Dio();
-    // userID = FirebaseAuth.instance.currentUser?.uid;
-    userID = 'nKLVSheOXfTsJsXssA3gzh3SEX92';
+    userID = FirebaseAuth.instance.currentUser?.uid;
+    // userID = 'nKLVSheOXfTsJsXssA3gzh3SEX92';
     var res = await dio.get('https://backend-kb2pqsadra-et.a.run.app/viewComplaintsResolved?user=$userID');
     print(res);
     cardsData = convertToQueryModels(res.data);

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
@@ -177,7 +178,7 @@ class _QueryFormState extends State<QueryForm> {
                                       'longitude': _currentLocation.longitude,
                                       'description': _descController.text,
                                       'urgency': _sliderValue,
-                                      'user': 'Ishaan'
+                                      'user': FirebaseAuth.instance.currentUser?.uid
                                     });
                                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                     content: Text('Success!!'),

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart' as location_package;
@@ -22,8 +23,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late location_package.LocationData _currentLocation;
   late StreamSubscription<location_package.LocationData> _locationSubscription;
   late String address = '';
+  late Map<String, dynamic> userData = {};
+  late bool serverCalled = false;
 
-  void _initLocationService() {
+  void _initLocationService() async {
     final location = location_package.Location();
     location.requestPermission().then((granted) {
       if (granted == location_package.PermissionStatus.granted) {
@@ -43,6 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Placemark place = placemarks[0];
         if(mounted) {
           setState(() {
+            serverCalled = true;
             address = '${place.subLocality}, ${place.locality}';
           });
         }
@@ -52,108 +56,123 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  Future<void> fetchCardDetails() async {
+    final dio = Dio();
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+    final cards = await dio.get('https://backend-kb2pqsadra-et.a.run.app/getUserDetails?user=$userID');
+    print(cards.data);
+    userData = cards.data;
+    _initLocationService();
+  }
+
   @override
   void initState() {
     super.initState();
-    _initLocationService();
+    fetchCardDetails();
   }
 
 
   @override
   Widget build(BuildContext context) {
+    return serverCalled == false
+        ? Center(child: CircularProgressIndicator())
+        : myBuild();
+  }
+
+  Widget myBuild() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
             child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 20),
-                    Stack(
-                      children: [
-                        Container(
-                          width: 130,
-                          height: 130,
+              scrollDirection: Axis.vertical,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 20),
+                  Stack(
+                    children: [
+                      Container(
+                        width: 130,
+                        height: 130,
+                        decoration: BoxDecoration(
+                          border: Border.all(width: 4, color: AppColors.myPurpleBlue),
+                          boxShadow: [
+                            BoxShadow(
+                              spreadRadius: 2,
+                              blurRadius: 10,
+                              color: Colors.black.withOpacity(0.1),
+                            )
+                          ],
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(
+                              userData['profilePic']
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Container(
+                          height: 40,
+                          width: 40,
                           decoration: BoxDecoration(
-                            border: Border.all(width: 4, color: AppColors.myPurpleBlue),
-                            boxShadow: [
-                              BoxShadow(
-                                spreadRadius: 2,
-                                blurRadius: 10,
-                                color: Colors.black.withOpacity(0.1),
-                              )
-                            ],
                             shape: BoxShape.circle,
-                            image: const DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage(
-                                'assets/images/ishaan.jfif',
-                              ),
+                            border: Border.all(
+                              width: 4,
+                              color: AppColors.myPurpleBlue,
+                            ),
+                            color: Colors.blue,
+                          ),
+                          child: const InkWell(
+                            onTap: null,
+                            child: Icon(
+                              Icons.edit,
+                              color: AppColors.white,
                             ),
                           ),
                         ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                width: 4,
-                                color: AppColors.myPurpleBlue,
-                              ),
-                              color: Colors.blue,
-                            ),
-                            child: const InkWell(
-                              onTap: null,
-                              child: Icon(
-                                Icons.edit,
-                                color: AppColors.white,
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 16.0),
+                  Text(
+                    userData['firstName'] + ' ' + userData['lastName'],
+                    style: TextStyle(
+                      fontFamily: 'Hind',
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold,
                     ),
-                    const SizedBox(height: 16.0),
-                    const Text(
-                      'Ishaan Oberoi',
-                      style: TextStyle(
-                        fontFamily: 'Hind',
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.bold,
+                  ),
+                  Text(
+                    FirebaseAuth.instance.currentUser!.email ?? '',
+                    style: TextStyle(
+                      fontFamily: 'Hind',
+                      fontSize: 16.0,
+                      color: AppColors.myCommentGray,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                          Icons.location_on_rounded,
+                          color: AppColors.myPurpleBlue
                       ),
-                    ),
-                    const Text(
-                      'ishaan.oberoi@gmail.com',
-                      style: TextStyle(
-                        fontFamily: 'Hind',
-                        fontSize: 16.0,
-                        color: AppColors.myCommentGray,
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                            Icons.location_on_rounded,
-                            color: AppColors.myPurpleBlue
+                      Text(
+                        address,
+                        style: const TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 13,
                         ),
-                        Text(
-                          address,
-                          style: const TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 13,
-                          ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 30),
-                    Container(
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 30),
+                  Container(
                       width: AppHelpers.screenWidth(context) * 0.9,
                       height: AppHelpers.screenHeight(context) * 0.5,
                       decoration: BoxDecoration(
@@ -163,10 +182,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                       child: const showMap()
-                    ),
-                  ],
-                ),
-        )),
+                  ),
+                ],
+              ),
+            )),
         Column(
           children: [
             const SizedBox(height: 5),

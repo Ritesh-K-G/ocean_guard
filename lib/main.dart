@@ -76,7 +76,7 @@ class _AuthCheckState extends State<AuthCheck> {
                     return Navbar();
                 }
               }
-              return CircularProgressIndicator(); // Show loading while fetching user data
+              return Center(child: CircularProgressIndicator()); // Show loading while fetching user data
             },
           );
         } else {
