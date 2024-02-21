@@ -16,9 +16,6 @@ dependencies:
   image_picker: ^1.0.5
   cupertino_icons: ^1.0.2
   flutter_map: ^6.1.0
-  firebase_core: ^2.25.4
-  cloud_firestore: ^4.15.5
-  firebase_auth: ^4.17.4
   decorated_text: ^0.1.0
   location: ^5.0.3
   geocoding: ^2.1.1
