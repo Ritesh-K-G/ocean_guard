@@ -13,6 +13,7 @@ class QueriesDashBoard extends StatefulWidget {
 }
 
 class _QueriesDashBoardState extends State<QueriesDashBoard> {
+  late bool serverCalled = false;
   List<QueryModel> sampleQueries = [];
   late String? userID;
 
@@ -33,12 +34,14 @@ class _QueriesDashBoardState extends State<QueriesDashBoard> {
     final cards = await dio.get('https://backend-kb2pqsadra-et.a.run.app/viewComplaintsUser?user=$userID');
     print(cards.data);
     sampleQueries = convertToQueryModels(cards.data);
-    setState(() {});
+    setState(() {
+      serverCalled = true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return sampleQueries.isEmpty
+    return serverCalled == false
       ? Center(child: CircularProgressIndicator())
       : myBuid();
   }
