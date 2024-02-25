@@ -26,49 +26,68 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late Map<String, dynamic> userData = {};
   late bool serverCalled = false;
 
-  void _initLocationService() async {
+  Future<void> _initLocationService() async {
     final location = location_package.Location();
     location.requestPermission().then((granted) {
       if (granted == location_package.PermissionStatus.granted) {
-        _locationSubscription = location.onLocationChanged.listen((location_package.LocationData result) {
+        _locationSubscription = location.onLocationChanged.listen((location_package.LocationData result)async  {
           _currentLocation = result;
-          convertCoordinatesToAddress(result.latitude!, result.longitude!);
+          print(result.latitude);
+          print(result.longitude);
+          await convertCoordinatesToAddress(result.latitude!, result.longitude!);
         });
       }
     });
   }
 
-  void convertCoordinatesToAddress(double latitude, double longitude) async {
+  Future<void> convertCoordinatesToAddress(double latitude, double longitude) async {
     try {
-      List<Placemark> placemarks =
-      await placemarkFromCoordinates(latitude, longitude);
-      if (placemarks.isNotEmpty) {
-        Placemark place = placemarks[0];
-        if(mounted) {
+      print('hehjrwf');
+      if (mounted) {
+        final dio=Dio();
+        Response response = await dio.get(
+          'https://geocode.maps.co/reverse',
+          queryParameters: {'lat': latitude, 'lon': longitude,'api_key':'65daf4753c5bf891740438sayd9c04a'},
+        );
+        if(response.data['address']!=null){
+
           setState(() {
+            address = '${response.data['address']['suburb']}, ${response
+                .data['address']['state_district']}';
             serverCalled = true;
-            address = '${place.subLocality}, ${place.locality}';
           });
         }
+        print(response.data);
       }
+
     } catch (e) {
       print("Error converting coordinates to address: $e");
+    }
+    finally{
     }
   }
 
   Future<void> fetchCardDetails() async {
-    final dio = Dio();
-    final userID = FirebaseAuth.instance.currentUser?.uid;
-    final cards = await dio.get('https://backend-kb2pqsadra-et.a.run.app/getUserDetails?user=$userID');
-    print(cards.data);
-    userData = cards.data;
-    _initLocationService();
+    if (mounted) {
+      final dio = Dio();
+      final userID = FirebaseAuth.instance.currentUser?.uid;
+      final cards = await dio.get('https://backend-kb2pqsadra-et.a.run.app/getUserDetails?user=$userID');
+      print(cards.data);
+      userData = cards.data;
+      // await _initLocationService();
+      setState(() {
+        address = 'Jhalwa, Prayagraj';
+        serverCalled = true;
+      });
+    }
   }
 
   @override
-  void initState() {
+  void initState(){
     super.initState();
-    fetchCardDetails();
+    (()async =>{
+      await fetchCardDetails()
+    })();
   }
 
 
@@ -108,7 +127,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: NetworkImage(
-                              userData['profilePic']
+                                userData['profilePic']
                             ),
                           ),
                         ),
